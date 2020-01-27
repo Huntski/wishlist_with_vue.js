@@ -2,8 +2,8 @@
     <div>
         <form @submit="addItem">
             <div class="form__items">
-                <input type="text" name="title" placeholder="Title" v-model="title">
-                <input type="text" name="url" placeholder="Photo url" v-model="url">
+                <input type="text" name="title" placeholder="Title" v-model="title" autocomplete="off">
+                <input type="text" name="url" placeholder="Photo url" v-model="url" autocomplete="off">
             </div>
             <button type="submit">Submit</button>
         </form>
@@ -11,8 +11,6 @@
 </template>
 
 <script>
-
-// import uuid from 'uuid';
 
 export default {
     name: 'AddForm',
@@ -26,12 +24,16 @@ export default {
             e.preventDefault()
             if (this.title == '') return;
             const newItem = {
-                // id: uuid.v4(),
                 title: this.title,
-                completed: false
+                url: this.url,
             }
+
+            // Send data to parent
             this.$emit('add-item', newItem)
+
+            // Reset input fields
             this.title = ''
+            this.url = ''
         }
     }
 }

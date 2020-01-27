@@ -12,6 +12,7 @@
 import Header from './components/layouts/Header';
 import WishList from './components/WishList';
 import AddForm from './components/AddForm';
+import axios from 'axios';
 
 export default {
   name: 'app',
@@ -22,35 +23,43 @@ export default {
   },
   data() {
     return {
-      jsonFile : 'assets/wishlist.json',
+      // api : 'https://wieberanzijn.com/school/wishlist_api/',
+      api : 'http://localhost/wishlist_api/',
       wishlist : [],
-      fs : require('fs')
     }
   },
   methods: {
     deleteItem (id) {
-      let wishlist = this.getList()
-      let updatedWishlist = []
-      wishlist.forEach(item => {
-        if (item.id !== id)
-          updatedWishlist.push(item)
+      axios.post(this.api + '?r=remove', {
+        'id' : id
       })
 
-      this.updateJson()
+      let wishlist = this.getList()
+      let newList = []
+      wishlist.forEach(item => {
+        if (item.id !== id)
+          newList.push(item)
+      })
+
+      wishlist = newList
     },
 
     addItem(item) {
-      this.wishlist.push(item)
 
-      this.updateJson()
-    },
+      let newItem = {
+        title : item.title,
+        url : item.url
+      }
 
-    updateJson() {
-      this.fs.writeFile(this.jsonFile, JSON.stringify(this.wishlist));
+      axios.post(this.api + '?r=upload', newItem)
+
+      this.wishlist.push(newItem)
     },
   },
   created() {
-    this.wishlist = JSON.parse(this.fs.readFileSync(this.jsonFile).toString());
+    axios.get(this.api)
+      .then(res => this.wishlist = res.data)
+      .catch()
   }
 }
 </script>

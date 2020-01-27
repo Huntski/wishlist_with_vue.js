@@ -20,6 +20,10 @@ export default {
 </script>
 
 <style scoped>
+
+    .content {
+        margin-top: 50px;
+    }
     .wishlist__span {
         font-size: 1.3em;
         margin-top: 190px;
