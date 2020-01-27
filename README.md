@@ -1,2 +1,1 @@
-# vue_kennismaking
-School | Starting vue.js
+# Making a wishlist with vue | School
