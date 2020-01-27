@@ -2,7 +2,7 @@
     <div class="item" v-bind:class="{'item--completed':item.completed}">
         <input type="checkbox" class="item__checkbox" v-on:change="markComplete">
         <p class="item__title">{{item.title}}</p>
-        <button class="item__delete" @click="delItem(item.id)">x</button>
+        <button class="item__delete" @click="$emit('del-item', item.id)">x</button>
     </div>
 </template>
 
@@ -13,10 +13,6 @@ export default {
     methods: {
         markComplete() {
             this.item.completed = !this.item.completed;
-        },
-
-        delItem(id) {
-            this.$emit('del-item', id)
         }
     }
 }

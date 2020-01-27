@@ -1,10 +1,10 @@
 <template>
   <div id="app">
     <Header />
-    <AddForm v-on:add-todo="addItem" />
+    <AddForm v-on:add-item="addItem" />
     <WishList
     v-bind:wishlist="wishlist"
-    v-on:del-wishlist="deleteWishItem"/>
+    v-on:del-item="deleteItem"/>
   </div>
 </template>
 
@@ -22,33 +22,35 @@ export default {
   },
   data() {
     return {
-      wishlist : [
-        {
-          id: 1,
-          title: 'number 1',
-          completed: false
-        },
-        {
-          id: 2,
-          title: 'number 3',
-          completed: false
-        },
-        {
-          id: 3,
-          title: 'number 3',
-          completed: false
-        }
-      ]
+      jsonFile : 'assets/wishlist.json',
+      wishlist : [],
+      fs : require('fs')
     }
   },
   methods: {
-    deleteWishItem(id) {
-      this.wishlist = this.wishlist.filter(item => item.id !== id);
+    deleteItem (id) {
+      let wishlist = this.getList()
+      let updatedWishlist = []
+      wishlist.forEach(item => {
+        if (item.id !== id)
+          updatedWishlist.push(item)
+      })
+
+      this.updateJson()
     },
 
-    addItem (item) {
-      this.wishlist = [...this.wishlist, item];
-    }
+    addItem(item) {
+      this.wishlist.push(item)
+
+      this.updateJson()
+    },
+
+    updateJson() {
+      this.fs.writeFile(this.jsonFile, JSON.stringify(this.wishlist));
+    },
+  },
+  created() {
+    this.wishlist = JSON.parse(this.fs.readFileSync(this.jsonFile).toString());
   }
 }
 </script>

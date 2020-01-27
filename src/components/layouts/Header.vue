@@ -11,5 +11,9 @@ export default {
 </script>
 
 <style scoped>
-
+    @media screen and (max-width: 600px){
+        .header {
+            text-align: center;
+        }
+    }
 </style>
