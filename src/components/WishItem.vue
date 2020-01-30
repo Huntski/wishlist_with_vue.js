@@ -1,8 +1,7 @@
 <template>
     <div class="item" v-bind:class="{'item--completed':item.completed}">
-        <input type="checkbox" class="item__checkbox" v-on:change="markComplete">
-        <p class="item__title">{{item.title}}</p>
-        <button class="item__delete" @click="$emit('del-item', item.id)">x</button>
+        <p class="item__title">{{item}}</p>
+        <button class="item__delete" @click="$emit('del-item', item)">x</button>
     </div>
 </template>
 
@@ -10,11 +9,6 @@
 export default {
     name: "WishItem",
     props: ['item'],
-    methods: {
-        markComplete() {
-            this.item.completed = !this.item.completed;
-        }
-    }
 }
 </script>
 
@@ -50,7 +44,7 @@ export default {
         margin: 0;
         padding: 0;
         text-transform: capitalize;
-        margin-left: 10px;
+        margin-left: 30px;
     }
 
     .item__delete {

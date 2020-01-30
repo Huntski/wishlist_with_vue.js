@@ -12,7 +12,6 @@
 import Header from './components/layouts/Header';
 import WishList from './components/WishList';
 import AddForm from './components/AddForm';
-import axios from 'axios';
 
 export default {
   name: 'app',
@@ -23,43 +22,37 @@ export default {
   },
   data() {
     return {
-      // api : 'https://wieberanzijn.com/school/wishlist_api/',
-      api : 'http://localhost/wishlist_api/',
       wishlist : [],
     }
   },
   methods: {
-    deleteItem (id) {
-      axios.post(this.api + '?r=remove', {
-        'id' : id
-      })
-
-      let wishlist = this.getList()
-      let newList = []
-      wishlist.forEach(item => {
-        if (item.id !== id)
-          newList.push(item)
-      })
-
-      wishlist = newList
+    deleteItem (item) {
+      delete this.wishlist[this.wishlist.indexOf(item)]
+      this.update()
     },
 
     addItem(item) {
-
-      let newItem = {
-        title : item.title,
-        url : item.url
-      }
-
-      axios.post(this.api + '?r=upload', newItem)
-
-      this.wishlist.push(newItem)
+      this.wishlist.push(item)
+      this.update()
     },
+
+    update() {
+      let updatedList = []
+      this.wishlist.forEach(v => {
+        if (v != '' || v)
+          updatedList.push(v)
+      })
+      this.wishlist = updatedList
+      localStorage.setItem('wishlist', updatedList)
+    }
   },
   created() {
-    axios.get(this.api)
-      .then(res => this.wishlist = res.data)
-      .catch()
+    let wishlist = localStorage.getItem('wishlist')
+    if (wishlist == null || wishlist == 'undefined') {
+      localStorage.setItem('wishlist', [])
+      wishlist = []
+    }
+    this.wishlist = wishlist.split(',')
   }
 }
 </script>

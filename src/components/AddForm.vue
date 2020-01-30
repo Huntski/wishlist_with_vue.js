@@ -3,7 +3,6 @@
         <form @submit="addItem">
             <div class="form__items">
                 <input type="text" name="title" placeholder="Title" v-model="title" autocomplete="off">
-                <input type="text" name="url" placeholder="Photo url" v-model="url" autocomplete="off">
             </div>
             <button type="submit">Submit</button>
         </form>
@@ -16,24 +15,19 @@ export default {
     name: 'AddForm',
     data() {
         return {
-            title: ''
+            title : ''
         }
     },
     methods: {
         addItem (e) {
             e.preventDefault()
             if (this.title == '') return;
-            const newItem = {
-                title: this.title,
-                url: this.url,
-            }
 
             // Send data to parent
-            this.$emit('add-item', newItem)
+            this.$emit('add-item', this.title)
 
             // Reset input fields
             this.title = ''
-            this.url = ''
         }
     }
 }

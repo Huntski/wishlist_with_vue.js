@@ -1,7 +1,7 @@
 <template>
     <div class="content">
-        <div v-bind:key="item.id" v-for="item in wishlist" class="wishlist">
-            <WishItem v-bind:item="item" v-on:del-item="$emit('del-item', item.id)" />
+        <div v-bind:key="item" v-for="item in wishlist" class="wishlist">
+            <WishItem v-bind:item="item" v-on:del-item="$emit('del-item', item)" />
         </div>
         <span v-if="!wishlist.length" class="wishlist__span">There are no items in your wishlist.</span>
     </div>
